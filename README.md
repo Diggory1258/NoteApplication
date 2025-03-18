@@ -14,7 +14,7 @@
 
 - **Ngôn ngữ lập trình**: Jetpack Compose, Kotlin
 - **Framework**: Android SDK
-- **Thư viện**: (Liệt kê các thư viện bạn đã sử dụng, ví dụ: Room, LiveData, ViewModel, v.v.)
+- **Thư viện**:  Room, LiveData, ViewModel, Navigation, v.v.)
 
 ## Hướng dẫn cài đặt
 
@@ -22,3 +22,24 @@
 
    ```bash
    git clone https://github.com/Diggory1258/NoteApplication.git
+
+   
+2. **Mở dự án trong Android Studio**
+3. **Đồng bộ hóa dự án**
+4. **Chạy ứng dụng**
+
+
+## Đóng góp
+Chúng tôi hoan nghênh mọi đóng góp từ cộng đồng. Nếu bạn muốn đóng góp, vui lòng:
+
+1. **Fork repo này**
+
+2. **Tạo một nhánh mới**:
+
+```bash
+git checkout -b new_feature
+
+git commit -m 'commit message'
+
+git push origin new_feature
+
