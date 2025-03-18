@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">NoteApplication</string>
+    <string name="str_hint_content">Enter Note</string>
+</resources>
