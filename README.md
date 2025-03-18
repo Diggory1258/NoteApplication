@@ -1,45 +1,43 @@
 # NoteApplication
 
-Ứng dụng ghi chú cho phép người dùng tạo, quản lý và lưu trữ các ghi chú cá nhân một cách hiệu quả.
+A note-taking application that allows users to create, manage, and store personal notes efficiently.
 
-## Tính năng
-- **Tạo ghi chú mới**: Người dùng có thể tạo ghi chú với tiêu đề và nội dung.
-- **Chỉnh sửa ghi chú**: Cho phép cập nhật nội dung của các ghi chú đã tạo.
-- **Xóa ghi chú**: Xóa các ghi chú không còn cần thiết.
-- **Danh sách ghi chú**: Hiển thị tất cả các ghi chú đã tạo trong một danh sách.
-- **Load more**: Người dùng tải thêm danh sách ghi chú.
-- **Refresh**: Người dùng làm mới lại danh sách ghi chú.
+## Features
+- **Create new notes**: Users can create notes with a title and content.
+- **Edit notes**: Allows updating the content of existing notes.
+- **Delete notes**: Remove notes that are no longer needed.
+- **Note list**: Displays all created notes in a list.
+- **Load more**: Users can load additional notes.
+- **Refresh**: Users can refresh the note list.
 
-## Công nghệ sử dụng
+## Technologies Used
 
-- **Ngôn ngữ lập trình**: Jetpack Compose, Kotlin
+- **Programming Language**: Jetpack Compose, Kotlin
 - **Framework**: Android SDK
-- **Thư viện**:  Room, LiveData, ViewModel, Navigation, v.v.)
+- **Libraries**: Room, LiveData, ViewModel, Navigation, etc.
 
-## Hướng dẫn cài đặt
+## Installation Guide
 
-1. **Clone repo**:
+1. **Clone the repository**:
 
    ```bash
    git clone https://github.com/Diggory1258/NoteApplication.git
+2. **Open the project in Android Studio**
 
+3. **Sync the project**
+
+4. **Run the application**
+
+## Contributions
+We welcome all contributions from the community. If you would like to contribute, please:
+
+1. **Fork this repository**
+
+2. **Create a new branch**:
+
+   ```bash
+   git checkout -b new_feature
    
-2. **Mở dự án trong Android Studio**
-3. **Đồng bộ hóa dự án**
-4. **Chạy ứng dụng**
-
-
-## Đóng góp
-Chúng tôi hoan nghênh mọi đóng góp từ cộng đồng. Nếu bạn muốn đóng góp, vui lòng:
-
-1. **Fork repo này**
-
-2. **Tạo một nhánh mới**:
-
-```bash
-git checkout -b new_feature
-
-git commit -m 'commit message'
-
-git push origin new_feature
-
+   git commit -m 'commit message'
+   
+   git push origin new_feature
