@@ -30,6 +30,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,6 +49,7 @@ import com.vn.note.viewmodel.NoteViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotesScreen(navController: NavController, viewModel: NoteViewModel) {
+    var isFirstLoad by remember { mutableStateOf(true) }
     val notes by viewModel.notes.collectAsState()
     val isRefreshing by viewModel.isRefreshing.collectAsState()
     val listState = rememberLazyListState()
@@ -64,6 +68,11 @@ fun NotesScreen(navController: NavController, viewModel: NoteViewModel) {
             .collect { visibleItems ->
                 val lastVisibleItem = visibleItems.lastOrNull()?.index ?: 0
                 val totalItems = listState.layoutInfo.totalItemsCount
+
+                if (isFirstLoad) {
+                    isFirstLoad = false
+                    return@collect
+                }
 
                 if (lastVisibleItem >= totalItems - 10 && totalItems > 0) {
                     viewModel.loadMore()
@@ -86,7 +95,7 @@ fun NotesScreen(navController: NavController, viewModel: NoteViewModel) {
                     isRefreshing = isRefreshing,
                     state = pullToRefreshState,
                     onRefresh = {
-                        viewModel.loadInitialNotes(isRefreshing = true)
+                        viewModel.refreshData(isRefreshing = true)
                     })
         ) {
 

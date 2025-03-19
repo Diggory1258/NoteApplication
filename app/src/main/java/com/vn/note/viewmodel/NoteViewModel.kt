@@ -1,7 +1,6 @@
 package com.vn.note.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.vn.note.model.NoteUIModel
@@ -12,6 +11,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class NoteViewModel(application: Application) : AndroidViewModel(application) {
@@ -26,19 +26,24 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean> = _isRefreshing.asStateFlow()
 
-
     private var currentPage = 0
     private val pageSize = 30
 
     init {
         val dao = AppDatabase.getDatabase(application).noteDao()
         repository = NoteRepository(dao)
-        loadInitialNotes(isRefreshing = false)
-
-//        viewModelScope.launch {
-//            createDataScroll()
-//        }
+        viewModelScope.launch {
+            repository.observeChangeData().collectLatest {
+                loadNotes(if (_notes.value.isEmpty()) pageSize else _notes.value.size)
+            }
+        }
     }
+
+    private suspend fun loadNotes(limit: Int) {
+        currentPage = 0
+        _notes.value = repository.getNotesPaged(0, limit)
+    }
+
 
     fun getNoteById(noteId: Int?): NoteUIModel? {
         return notes.value.find { it.id == noteId }
@@ -78,28 +83,20 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     fun loadMore() {
         if (_isLoading.value) return
         viewModelScope.launch {
+            currentPage += 1
             _isLoading.value = true
-            repository.getNotesPaged(currentPage, pageSize)
-                .collect { newNotes ->
-                    Log.d("LOAD_DATA", "loadMore: ${newNotes.size}")
-                    _notes.value = (_notes.value + newNotes).distinctBy { it.id }
-                    Log.d("LOAD_DATA", "loadMore 2: ${_notes.value.size}")
-                    currentPage++
-                    _isLoading.value = false
-                }
+            val result = repository.getNotesPaged(currentPage * pageSize, pageSize)
+            _notes.value = (_notes.value + result).distinctBy { it.id }
+            _isLoading.value = false
         }
     }
 
-    fun loadInitialNotes(isRefreshing: Boolean) {
+    fun refreshData(isRefreshing: Boolean) {
         currentPage = 0
         _isRefreshing.value = isRefreshing
         viewModelScope.launch {
-            repository.getNotesPaged(currentPage, pageSize).collect { noteList ->
-                Log.d("LOAD_DATA", "loadInitialNotes: ${noteList.size}")
-                _notes.value = noteList
-                currentPage += 1
-                _isRefreshing.value = false
-            }
+            _notes.value = repository.getNotesPaged(currentPage * pageSize, pageSize)
+            _isRefreshing.value = false
         }
     }
 

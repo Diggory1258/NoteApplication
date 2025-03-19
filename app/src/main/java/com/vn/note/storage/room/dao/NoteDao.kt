@@ -11,8 +11,11 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NoteDao {
+    @Query("SELECT * FROM notes ORDER BY updatedAt DESC")
+    fun observeChange(): Flow<List<NoteEntity>>
+
     @Query("SELECT * FROM notes ORDER BY updatedAt DESC LIMIT :limit OFFSET :offset")
-    fun getPagedNotes(limit: Int, offset: Int): Flow<List<NoteEntity>>
+    suspend fun getPagedNotes(limit: Int, offset: Int): List<NoteEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(note: NoteEntity)

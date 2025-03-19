@@ -9,10 +9,12 @@ import kotlinx.coroutines.flow.map
 
 class NoteRepository(private val dao: NoteDao) {
 
-    fun getNotesPaged(page: Int, pageSize: Int): Flow<List<NoteUIModel>> {
-        val offset = page * pageSize
-        return dao.getPagedNotes(pageSize, offset)
-            .map { list -> list.map { it.toNoteUiModel() } }
+    suspend fun getNotesPaged(offset: Int, pageSize: Int): List<NoteUIModel> {
+        return dao.getPagedNotes(pageSize, offset).map { it.toNoteUiModel() }
+    }
+
+    fun observeChangeData():Flow<List<NoteUIModel>>{
+        return dao.observeChange().map { it.map { it.toNoteUiModel() } }
     }
 
     suspend fun insert(note: NoteEntity) = dao.insert(note)
